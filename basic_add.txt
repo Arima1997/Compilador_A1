@@ -1,0 +1,5 @@
+MOV A, 06h;
+MOV [2FFh], A;
+MOV A, 04h;
+ADD A, [2FFh];
+MOV [300h], A;

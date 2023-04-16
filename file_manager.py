@@ -1,39 +1,39 @@
 import os
 
-class GestionadorArchivos:
+class file_mgr:
 
-    def __init__(self, rutaensa, rutahexa):
-        self._rutaEnsa = rutaensa
-        self._rutaHexa = rutahexa
+    def __init__(self, assem_path, hexa_path):
+        self._assem_path = assem_path
+        self._rutaHexa = hexa_path
         self.contadorbytes = 0
 
     @property
-    def rutaEnsa(self):
-        return self._rutaEnsa
+    def assem_path(self):
+        return self._assem_path
 
     @property
     def rutaHexa(self):
         return self._rutaHexa
 
-    @rutaEnsa.setter
-    def rutaEnsa(self, rutaEnsa):
-        self._rutaEnsa = rutaEnsa
+    @assem_path.setter
+    def assem_path(self, assem_path):
+        self._assem_path = assem_path
 
     @rutaHexa.setter
     def rutaHexa(self, rutaHexa):
         self._rutaHexa = rutaHexa
 
-    def crear_archivos(self):
+    def create_file(self):
         """Este metodo se encarga de crear los archivos necesarios
         en formato txt, el primero donde se colocará el código ensamblador
         y el segundo donde se colocará la traducción al código hexadecimal"""
 
-        if os.path.exists(self._rutaEnsa):
-            print(f'Archivo {self._rutaEnsa} encontrado...')
+        if os.path.exists(self._assem_path):
+            print(f'Archivo {self._assem_path} encontrado...')
         else:
-            f = open(self._rutaEnsa, 'x', encoding='utf8')
+            f = open(self._assem_path, 'x', encoding='utf8')
             f.close()
-            print(f'Archivo {self._rutaEnsa} generado...')
+            print(f'Archivo {self._assem_path} generado...')
 
         if os.path.exists(self._rutaHexa):
             print(f'Archivo {self._rutaHexa} encontrado...')
@@ -42,30 +42,29 @@ class GestionadorArchivos:
             f.close()
             print(f'Archivo {self._rutaHexa} generado...')
 
-    def leer_archivo(self):
+    def read_file(self):
         lista = []
-        f = open(self._rutaEnsa, 'r', encoding='utf8')
+        f = open(self._assem_path, 'r', encoding='utf8')
         lista = f.readlines()
         f.close()
-        if len(lista) == 0:
-            return 0
         return lista
 
-    def escribirarchivo(self, ensamble:list):
+    def write_file(self, ensamble:list):
         f = open(self._rutaHexa, 'w', encoding='utf8')
         f.write(f'Inicio del ensamble'.center(50, '-'))
         f.write('\n')
         for line in ensamble:
-            f.write(line)
+            f.write(line.__str__() + "\n")
+        f.write('\n')
         f.write(f'Fin del ensamble'.center(50, '-'))
         f.write('\n')
         f.close()
 
 if __name__ == '__main__':
-    Compil = GestionadorArchivos('Prueba1.txt', 'Prueba2.txt')
-    Compil.crear_archivos()
-    lista = Compil.leer_archivo()
+    Compil = file_mgr('Prueba1.txt', 'Prueba2.txt')
+    Compil.create_file()
+    lista = Compil.read_file()
     if lista == 0:
         print(f'El archivo esta vacio..')
     else:
-        Compil.escribirarchivo(lista)
+        Compil.write_file(lista)
